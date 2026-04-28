@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: transaction-service
+  threads:
+    virtual:
+      enabled: true # Diretriz obrigatoria: Java 21 Virtual Threads
+  cloud:
+    stream:
+      bindings:
+        transaction-out-0:
+          destination: transactions-topic
+          content-type: application/json
+    kafka:
+      binder:
+        brokers: ${KAFKA_BROKERS:localhost:9092} # Valor default para dev local
+        auto-create-topics: true
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/transaction_db}
+    username: ${DB_USER:user}
+    password: ${DB_PASS:password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update # O Hibernate criadá as tabelas no container do Postgres
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
